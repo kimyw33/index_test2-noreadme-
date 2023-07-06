@@ -15,7 +15,7 @@
   <script>
     //19_원래는 for을 돌면서 웹캠을 실행시켜 줬으나, 여기서는 한 번 만으로 예측을 해야 하므로, 아래와 같은 새로운 버튼 추가
   </script>
-    <button type="button" onclick="predict()">Prediction</button>
+  <button type="button" onclick="predict()">Prediction</button>
 
   <script>// 00_버튼을 클릭하면, 아래 init()이라는 함수를 실행!</script>
 
@@ -138,13 +138,13 @@
     async function predict() {
       // predict can take in an image, video or canvas html element
 
-// 17_teachable machine documnet에 따라 input_image를 넣어주기 위해 아래와 같이 이미지 변수(new_image) 생성 및 predict 추가
-      var new_image = document.getElementById("input_image")
-// 아래내용 일단 주석
-// model.predict(
-//   image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap,
-//   flipped = false
-// )
+      // 17_teachable machine documnet에 따라 input_image를 넣어주기 위해 아래와 같이 이미지 변수(new_image) 생성 및 predict 추가
+      var new_image = document.getElementById("input_image");
+      // 아래내용 일단 주석
+      // model.predict(
+      //   image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap,
+      //   flipped = false
+      // )
 
       // 16_아래는 webcam.canvas 대신에 내가 넣어줄 이미지(new_image로 바꾸기) + 두 번째 인자로 document 상에 안뒤집혔으니 false 추가
       const prediction = await model.predict(new_image, false);
@@ -157,10 +157,10 @@
       //     // 06_위와 같이 HTML요소에 넣어주고 있다(innerHTML)
       // }
       // 08_아래 내용 추가(여기까지 코드 설명, 이후 코드펜 내용)
-      if (prediction[0].className == "피카츄" && prediction[0].probability.toFixed(2) > 0.5) {
+      if (prediction[0].className == "피카츄" && prediction[0].probability.toFixed(2) > 0.8) {
         labelContainer.childNodes[0].innerHTML = "피카츄 입니다."
       }
-      else if (prediction[1].className == "꼬부기" && prediction[1].probability.toFixed(2) > 0.5) {
+      else if (prediction[1].className == "꼬부기" && prediction[1].probability.toFixed(2) > 0.8) {
         labelContainer.childNodes[0].innerHTML = "꼬부기 입니다."
       } else {
         labelContainer.childNodes[0].innerHTML = "알 수 없습니다."
