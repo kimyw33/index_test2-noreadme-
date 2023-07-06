@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>포켓몬 실습</title>
+  <title>sample</title>
   <link rel=”stylesheet” href=”styles.css”>
 
 <body>
@@ -53,35 +53,50 @@
       maxPredictions = model.getTotalClasses();
 
       // Convenience function to setup a webcam
-      const flip = true; // whether to flip the webcam
-      webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-      await webcam.setup(); // request access to the webcam
-      await webcam.play();
-      window.requestAnimationFrame(loop);
+      //const flip = true; // whether to flip the webcam
+      //webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+      //await webcam.setup(); // request access to the webcam
+      //await webcam.play();
+      //window.requestAnimationFrame(loop);
 
       // append elements to the DOM
-      document.getElementById("webcam-container").appendChild(webcam.canvas);
+      //삭제 document.getElementById("webcam-container").appendChild(webcam.canvas);
       labelContainer = document.getElementById("label-container");
       for (let i = 0; i < maxPredictions; i++) { // and class labels
         labelContainer.appendChild(document.createElement("div"));
       }
     }
 
-    async function loop() {
-      webcam.update(); // update the webcam frame
-      await predict();
-      window.requestAnimationFrame(loop);
-    }
+    //async function loop() {
+      //webcam.update(); // update the webcam frame
+      //await predict();
+      //window.requestAnimationFrame(loop);
+    //}
 
     // run the webcam image through the image model
     async function predict() {
       // predict can take in an image, video or canvas html element
-      const prediction = await model.predict(webcam.canvas);
-      for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction =
-          prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-        labelContainer.childNodes[i].innerHTML = classPrediction;
+      var image = document.getElementById("pocketmon-image");
+      const prediction = await model.predict(image, false);
+
+      if (prediction[0].probability > 0.6) {
+        labelContainer.childNodes[0].innerHTML =
+          "공구의 명칭은 '" + prediction[0].className + "' 입니다.";
+        labelContainer.childNodes[1].innerHTML =
+          "공구 사용시 주의사항은 '나사산이 망가지므로, 힘을 너무 세게 가하지 않기'입니다";
+        labelContainer.childNodes[2].innerHTML =
+          "공구 사용시 유용한 팁은 '시계방향이 조이는 것'입니다";
       }
+      else {
+        labelContainer.childNodes[0].innerHTML =
+          "공구가 무엇인지 구분이 안되었어요.";
+        labelContainer.childNodes[1].innerHTML =
+          "아래 '모델 성능 개선에 참여하기'의 안내를 읽어보고,";
+        labelContainer.childNodes[2].innerHTML =
+          "다른 각도에서 다시 촬영 후 이미지를 업로드해보세요.";
+      }
+
+
     }
   </script>
   <script>
